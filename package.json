@@ -1,23 +1,40 @@
 {
-  "name": "dse-frontend",
-  "version": "1.0.0",
+  "name": "dse-me_capstone_fn",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint"
   },
   "dependencies": {
-    "next": "14.1.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "next": "16.0.6",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "eslint": "8.56.0",
     "eslint-config-next": "14.1.0",
     "husky": "9.0.10",
     "lint-staged": "15.2.0",
     "prettier": "^3.7.3"
+=======
+    "@eslint/js": "^9.39.1",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "16.0.6",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.5.0",
+    "jiti": "^2.6.1",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "typescript-eslint": "^8.48.1"
+>>>>>>> 7620c1c936dafcd177812c5dd6d1489556e048b2
   }
 }
