@@ -1,1 +1,1 @@
-module.exports={"*.{js,jsx,ts,tsx}":["eslint --fix","git add"]};
+module.exports = { '*.{js,jsx,ts,tsx}': ['eslint --fix', 'git add'] };
