@@ -23,9 +23,6 @@ function ResetPasswordPage() {
       alert('Passwords do not match');
       return;
     }
-    // TODO: Replace with actual API call
-    // await fetch('/api/reset-password', { method: 'POST', body: JSON.stringify(formData) });
-    console.log('Reset password:', formData);
     setIsSubmitted(true);
   };
 

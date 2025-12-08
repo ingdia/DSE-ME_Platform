@@ -19,7 +19,6 @@ function SignupPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
   };
 
   const isFormValid = formData.email && formData.password && formData.confirmPassword;

@@ -19,7 +19,6 @@ function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login:', formData);
   };
 
   const isFormValid = formData.email && formData.password;
@@ -38,7 +37,7 @@ function LoginPage() {
         <PasswordInput name="password" value={formData.password} onChange={handleChange} required />
         
         <div className="text-right">
-          <Link href="/forgot-password" className="text-xs text-[#0B609D] hover:underline">
+          <Link href="/forgot-password" className="text-xs text-[#0B609D] hover:underline transition-colors">
             Forgot Password?
           </Link>
         </div>

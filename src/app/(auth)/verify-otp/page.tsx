@@ -31,6 +31,12 @@ function VerifyOtpPage() {
     }
   };
 
+  const handleResend = () => {
+    setOtp(['', '', '', '', '', '']);
+    setError('');
+    inputRefs.current[0]?.focus();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const otpCode = otp.join('');
@@ -43,8 +49,6 @@ function VerifyOtpPage() {
     setIsLoading(true);
     
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/verify-otp', { method: 'POST', body: JSON.stringify({ otp: otpCode }) });
       await new Promise(resolve => setTimeout(resolve, 2000));
       router.push('/reset-password');
     } catch (error) {
@@ -74,7 +78,7 @@ function VerifyOtpPage() {
             {otp.map((digit, index) => (
               <input 
                 key={index} 
-                ref={(el) => inputRefs.current[index] = el}
+                ref={(el) => { inputRefs.current[index] = el; }}
                 type="text" 
                 maxLength={1}
                 value={digit}
@@ -104,19 +108,16 @@ function VerifyOtpPage() {
       <div className="flex justify-center items-center space-x-4 text-sm">
         <button 
           type="button"
-          onClick={() => {
-            // TODO: Implement resend OTP API call
-            console.log('Resend OTP');
-          }}
-          className="text-[#0B609D] hover:underline font-medium"
+          onClick={handleResend}
+          className="text-[#0B609D] hover:underline font-medium transition-colors"
         >
-          Resend OTP
+          Resend Code
         </button>
         <div className="text-gray-400">|</div>
         <button 
           type="button"
           onClick={() => router.push('/forgot-password')}
-          className="text-[#0B609D] hover:underline font-medium"
+          className="text-[#0B609D] hover:underline font-medium transition-colors"
         >
           Change Email
         </button>
