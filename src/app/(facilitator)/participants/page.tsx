@@ -3,7 +3,7 @@ import PrimaryButton from '@/components/PrimaryButton'
 import { Plus } from 'lucide-react' 
 
 function Participant() {
-  const router = useRouter()
+  
 
   return (
     <div className="h-screen flex flex-col">
