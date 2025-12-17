@@ -12,7 +12,7 @@ const data: ChartData[] = [
 
 function AttendanceChart () {
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-[320px]">
+    <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-80">
       <h3 className="text-sm font-bold text-gray-700 mb-4">Monthly attendance</h3>
       <div className="flex-1 w-full min-h-0">
         <ResponsiveContainer width="100%" height="100%">

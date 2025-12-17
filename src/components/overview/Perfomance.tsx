@@ -11,7 +11,7 @@ const performanceData = [
 
 function PerformanceChart() {
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-[320px]">
+    <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-80">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-sm font-bold text-gray-700">Student Performance Trends</h3>
         <select className="bg-gray-50 border-none text-xs font-semibold text-gray-500 rounded-lg py-1 px-3 outline-none cursor-pointer hover:bg-gray-100">

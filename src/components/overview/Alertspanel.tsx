@@ -3,7 +3,7 @@ import { AlertCircle, Activity } from 'lucide-react';
 
 const AlertsPanel: React.FC = () => {
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-[320px]">
+    <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col h-80">
       <h3 className="text-sm font-bold text-gray-800 mb-6">Alerts & Reminders</h3>
       
       <div className="flex-1 overflow-y-auto space-y-6 pr-2 custom-scrollbar">
