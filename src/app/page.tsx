@@ -1,16 +1,7 @@
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navbar";
-import React from 'react'
-import Footer from "@/components/Footer";
+import { redirect } from 'next/navigation';
 
-function page() {
-  return (
-    <div>
-       
-    </div>
-  )
+export default function page() {
+  redirect('/login');
 }
-
-export default page
   
 
