@@ -4,18 +4,21 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import AssignmentCard from "@/components/GradesComponents/AssignmentCard";
 import CreateAssignmentModal from "@/components/GradesComponents/CreateAssignmentModal";
+import { Assignment } from "@/types/assignment";
 
 export default function AssignmentsPage() {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  const assignments = [
+  const [assignments, setAssignments] = useState<Assignment[]>([
     {
       title: "HTML Structure Assignment",
       type: "Assignment",
       course: "Web Fundamentals",
       chapter: "HTML Basics",
-      dueDate: "20/01/2025",
+      dueDate: "2025-01-20",
       maxScore: 100,
     },
     {
@@ -23,15 +26,39 @@ export default function AssignmentsPage() {
       type: "Capstone",
       course: "Web Fundamentals",
       chapter: "Responsive Design",
-      dueDate: "25/01/2025",
+      dueDate: "2025-01-25",
       maxScore: 200,
     },
-    
-  ];
+  ]);
+
+  // Add assignment
+  const addAssignment = (newAssignment: Assignment) => {
+    setAssignments(prev => [...prev, newAssignment]);
+    setOpenCreate(false);
+  };
+
+  // Update assignment
+  const updateAssignment = (updated: Assignment) => {
+    if (editIndex === null) return;
+    const newList = [...assignments];
+    newList[editIndex] = updated;
+    setAssignments(newList);
+    setOpenEdit(false);
+    setEditIndex(null);
+  };
+
+  // Delete assignment
+  const deleteAssignment = (index: number) => {
+    if (confirm("Are you sure you want to delete this assignment?")) {
+      const newList = [...assignments];
+      newList.splice(index, 1);
+      setAssignments(newList);
+    }
+  };
 
   return (
     <div className="ml-28 pr-6 pb-6 min-h-screen">
-     
+    
       <div className="flex items-center gap-4 mb-4">
         <button
           onClick={() => router.back()}
@@ -39,33 +66,17 @@ export default function AssignmentsPage() {
         >
           <ArrowLeft size={18} />
         </button>
-
         <div>
-          <h1 className="text-xl font-bold text-sky-700">
-            Assignments
-          </h1>
-          <p className="text-xs text-gray-600">
-            Create and manage student assignments
-          </p>
+          <h1 className="text-xl font-bold text-sky-700">Assignments</h1>
+          <p className="text-xs text-gray-600">Create and manage student assignments</p>
         </div>
       </div>
 
      
       <div className="flex justify-end mb-4">
         <button
-          onClick={() => setOpen(true)}
-          className="
-            px-4 py-2
-            text-xs
-            text-white
-            rounded-full
-            bg-gradient-to-r
-            from-sky-600
-            to-gray-400
-            hover:from-sky-700
-            hover:to-gray-500
-            transition
-          "
+          onClick={() => setOpenCreate(true)}
+          className="px-4 py-2 text-xs text-white rounded-full bg-gradient-to-r from-sky-600 to-gray-400 hover:from-sky-700 hover:to-gray-500 transition"
         >
           + New Assignment
         </button>
@@ -78,17 +89,31 @@ export default function AssignmentsPage() {
             key={idx}
             {...a}
             onGradeClick={() => {}}
-            onEditClick={() => {}}
-            onDeleteClick={() => {}}
+            onEditClick={() => {
+              setEditIndex(idx);
+              setOpenEdit(true);
+            }}
+            onDeleteClick={() => deleteAssignment(idx)}
           />
         ))}
       </div>
 
-     
+      
       <CreateAssignmentModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
+        isOpen={openCreate}
+        onClose={() => setOpenCreate(false)}
+        onCreate={addAssignment}
       />
+
+     
+      {editIndex !== null && (
+        <CreateAssignmentModal
+          isOpen={openEdit}
+          onClose={() => setOpenEdit(false)}
+          onCreate={updateAssignment}
+          assignment={assignments[editIndex]}
+        />
+      )}
     </div>
   );
 }
