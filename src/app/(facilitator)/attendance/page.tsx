@@ -131,7 +131,7 @@ export default function AttendancePage() {
   };
 
   return (
-    <div className="p-6 space-y-6 md:ml-28">
+    <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold mb-4" style={{ color: '#34597E' }}>Attendance Tracking</h1>

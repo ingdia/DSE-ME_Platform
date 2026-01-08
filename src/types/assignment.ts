@@ -7,6 +7,8 @@ export interface Assignment {
   dueDate: string;
   maxScore: number;
   grades?: Record<string, number>; // studentId => score
+  totalStudents?: number;
+  gradedStudents?: number;
 }
 
 export interface Student {

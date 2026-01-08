@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Pencil, Trash, BookOpen, Calendar, Award, FileText } from "lucide-react";
+import { Pencil, Trash, BookOpen, Calendar, Award, FileText, CheckCircle, Clock, AlertCircle } from "lucide-react";
 
 interface AssignmentCardProps {
   title: string;
@@ -9,7 +9,10 @@ interface AssignmentCardProps {
   course: string;
   dueDate: string;
   maxScore: number;
-  description?: string; 
+  description?: string;
+  status?: "not-started" | "in-progress" | "completed";
+  totalStudents?: number;
+  gradedStudents?: number;
   onGradeClick?: () => void;
   onEditClick?: () => void;
   onDeleteClick?: () => void;
@@ -23,16 +26,64 @@ export default function AssignmentCard({
   dueDate,
   maxScore,
   description,
+  status = "not-started",
+  totalStudents = 0,
+  gradedStudents = 0,
   onGradeClick,
   onEditClick,
   onDeleteClick,
 }: AssignmentCardProps) {
+  
+ 
+  const getStatusStyles = () => {
+    switch (status) {
+      case "completed":
+        return {
+          card: "bg-white border-2 border-green-200",
+          badge: "bg-green-100 text-green-700",
+          icon: <CheckCircle className="text-green-500" size={16} />,
+          button: "bg-gray-600 hover:bg-gray-700 text-white",
+          buttonText: "View Grades"
+        };
+      case "in-progress":
+        return {
+          card: "bg-white border-2 border-yellow-200",
+          badge: "bg-yellow-100 text-yellow-700",
+          icon: <Clock className="text-yellow-500" size={16} />,
+          button: "bg-sky-600 hover:bg-sky-700 text-white",
+          buttonText: "Continue Grading"
+        };
+      default:
+        return {
+          card: "bg-white border-2 border-red-200",
+          badge: "bg-red-100 text-red-700",
+          icon: <AlertCircle className="text-red-500" size={16} />,
+          button: "bg-sky-700 hover:bg-sky-800 text-white",
+          buttonText: "Start Grading"
+        };
+    }
+  };
+
+  const statusStyles = getStatusStyles();
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 flex flex-col justify-between hover:shadow-lg transition">
-      
-      
+    <div className={`rounded-2xl shadow-md p-6 flex flex-col justify-between hover:shadow-lg transition ${statusStyles.card}`}>
+     
       <div className="flex justify-between items-start mb-3">
-        <h3 className="text-lg font-bold text-sky-700">{title}</h3>
+        <div className="flex-1">
+          <h3 className="text-lg font-bold text-sky-700 mb-2">{title}</h3>
+          <div className="flex items-center gap-2">
+            {statusStyles.icon}
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusStyles.badge}`}>
+              {status === "not-started" ? "Not Started" : 
+               status === "in-progress" ? "In Progress" : "Completed"}
+            </span>
+            {totalStudents > 0 && (
+              <span className="text-xs text-gray-500">
+                ({gradedStudents}/{totalStudents} graded)
+              </span>
+            )}
+          </div>
+        </div>
         <div className="flex gap-2">
           <button onClick={onEditClick} className="text-gray-600 hover:text-sky-700 transition">
             <Pencil size={16} />
@@ -83,9 +134,9 @@ export default function AssignmentCard({
       
       <button
         onClick={onGradeClick}
-        className="bg-sky-700 text-white py-2 rounded-full font-semibold hover:bg-sky-800 transition"
+        className={`py-2 rounded-full font-semibold transition ${statusStyles.button}`}
       >
-        Grade Students
+        {statusStyles.buttonText}
       </button>
     </div>
   );
