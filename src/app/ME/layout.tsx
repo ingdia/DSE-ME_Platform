@@ -20,6 +20,7 @@ export default function MELayout({
     if (path.includes('ME/attendance')) return 'Attendance';
     if (path.includes('ME/grades')) return 'Grades';
     if (path.includes('ME/surveys')) return 'Survey';
+    if (path.includes('ME/facilitators')) return 'Facilitators';
     if (path.includes('ME/settings')) return 'Settings';
     return 'Overview';
   };
