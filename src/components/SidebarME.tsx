@@ -13,14 +13,14 @@ import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-  { label: 'Overview', icon: Home, href: 'ME/overview' },
-  { label: 'Participants', icon: Users, href: 'ME/participants' },
-  { label: 'Facilitators', icon: UserCog, href: 'ME/facilitators' },
-  { label: 'Courses', icon:  BookOpen , href: 'ME/courses' },
-  { label: 'Reports', icon:  FileBarChart, href: 'ME/reports' },
+  { label: 'Overview', icon: Home, href: '/ME/overview' },
+  { label: 'Participants', icon: Users, href: '/ME/participants' },
+  { label: 'Facilitators', icon: UserCog, href: '/ME/facilitators' },
+  { label: 'Courses', icon:  BookOpen , href: '/ME/courses' },
+  { label: 'Reports', icon:  FileBarChart, href: '/ME/reports' },
 ];
 
-const settingsItem = { label: 'Settings', icon: Settings, href: 'ME/settings' };
+const settingsItem = { label: 'Settings', icon: Settings, href: '/ME/settings' };
 
 interface SidebarProps {
   isOpen?: boolean;
