@@ -7,20 +7,21 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   assignment: Assignment;
+  students: Student[];
   onSaveGrades: (grades: Record<string, number>) => void;
 };
 
-// Dummy student list
+
 const dummyStudents: Student[] = [
   { id: "s1", name: "Alice Johnson" },
   { id: "s2", name: "Bob Smith" },
   { id: "s3", name: "Charlie Brown" },
 ];
 
-export default function GradeStudentsModal({ isOpen, onClose, assignment, onSaveGrades }: Props) {
+export default function GradeStudentsModal({ isOpen, onClose, assignment, students, onSaveGrades }: Props) {
   const [grades, setGrades] = useState<Record<string, number>>({});
 
-  // Populate existing grades if any
+
   useEffect(() => {
     setGrades(assignment.grades || {});
   }, [assignment]);
@@ -53,7 +54,7 @@ export default function GradeStudentsModal({ isOpen, onClose, assignment, onSave
         </div>
 
         <div className="space-y-3">
-          {dummyStudents.map(student => (
+          {students.map(student => (
             <div key={student.id} className="flex items-center justify-between gap-4 bg-sky-50 px-4 py-2 rounded-lg">
               <span className="text-gray-700 font-medium">{student.name}</span>
               <input

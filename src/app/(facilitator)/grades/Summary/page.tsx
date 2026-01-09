@@ -1,12 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Users,
   BarChart3,
   CheckCircle,
   ClipboardList,
+  ArrowLeft,
 } from 'lucide-react';
+import StatCard from '@/components/ui/statuscard';
 
 type Category = 'assignment' | 'capstone' | 'quiz';
 
@@ -51,8 +54,16 @@ const getGrade = (percentage: number) => {
 };
 
 export default function GradeSummaryPage() {
+  const router = useRouter();
   const [gradeFilter, setGradeFilter] = useState('All');
   const [categoryFilter, setCategoryFilter] = useState('All');
+
+  const statsData = [
+    { title: "Total Students", value: studentsData.length.toString(), subtext: "0 passing", icon: <Users size={32} /> },
+    { title: "Class Average", value: "0.0%", subtext: "Overall performance", icon: <BarChart3 size={32} /> },
+    { title: "Pass Rate", value: "0%", subtext: "50% or higher", icon: <CheckCircle size={32} /> },
+    { title: "Total Assignments", value: "2", subtext: "1 Assignment, 1 Capstone", icon: <ClipboardList size={32} /> },
+  ];
 
   const filteredStudents = studentsData.filter((student) => {
     const totalScore =
@@ -70,69 +81,41 @@ export default function GradeSummaryPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#f0f4f8]  flex ml-22">
+    <div className="min-h-screen flex">
       <div className="flex-1 flex flex-col">
-        <main className="px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-
-          {/* TITLE */}
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-[#34597E]">
-              Grade Summary
-            </h1>
-            <p className="text-sm text-gray-500">
-              Comprehensive view of all student grades
-            </p>
+        <main className="py-6 space-y-8">
+         
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.back()}
+              className="p-2 rounded-full hover:bg-gray-200 transition"
+            >
+              <ArrowLeft size={18} />
+            </button>
+            <div>
+              <h1 className="text-xl font-bold text-sky-700">
+                Grade Summary
+              </h1>
+              <p className="text-sm text-gray-500">
+                Comprehensive view of all student grades
+              </p>
+            </div>
           </div>
 
-          {/* STATS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: <Users size={26} />,
-                title: 'Total Students',
-                value: studentsData.length,
-                sub: '0 passing',
-              },
-              {
-                icon: <BarChart3 size={26} />,
-                title: 'Class Average',
-                value: '0.0%',
-                sub: 'Overall performance',
-              },
-              {
-                icon: <CheckCircle size={26} />,
-                title: 'Pass Rate',
-                value: '0%',
-                sub: '50% or higher',
-              },
-              {
-                icon: <ClipboardList size={26} />,
-                title: 'Total Assignments',
-                value: '2',
-                sub: '1 Assignment, 1 Capstone',
-              },
-            ].map((card, i) => (
-              <div
+         
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {statsData.map((stat, i) => (
+              <StatCard
                 key={i}
-                className="bg-white rounded-2xl px-6 py-5 border border-slate-200 flex items-center gap-4"
-              >
-                <div className="text-[#34597E]">{card.icon}</div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-600">
-                    {card.title}
-                  </p>
-                  <p className="text-2xl font-bold text-[#34597E]">
-                    {card.value}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {card.sub}
-                  </p>
-                </div>
-              </div>
+                icon={stat.icon}
+                title={stat.title}
+                value={stat.value}
+                subtext={stat.subtext}
+              />
             ))}
           </div>
 
-          {/* FILTERS */}
+          
           <div className="bg-white rounded-2xl p-6 border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-4">
             <input
               type="text"
@@ -165,7 +148,7 @@ export default function GradeSummaryPage() {
             </select>
           </div>
 
-          {/* TABLE */}
+          
           <div className="bg-white rounded-2xl border border-slate-200 overflow-x-auto">
             <table className="min-w-[800px] w-full text-sm">
               <thead className="bg-[#eef3fb] text-[#1e3a8a]">
