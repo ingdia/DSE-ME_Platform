@@ -18,14 +18,15 @@ function Settings() {
   ] as const;
 
   return (
-    <div className="min-h-screen ">
-      <div className="mx-auto flex flex-col overflow-hidden">
-        <main className="flex-1 flex flex-col p-4 md:p-6 overflow-hidden">
-          {/* Header - Reduced margins and text sizes */}
-          <header className="mb-4">
-            
-            <p className="text-sm text-slate-500 max-w-2xl">
-              Manage your personal preferences, security, and notifications.
+    <div className="flex  min-h-screen  bg-[#f0f4f8] font-sans selection:bg-sky-100 selection:text-sky-700">
+      <div className="flex-1 flex flex-col">
+        <main className="flex-1 p-2 md:p-6 lg:p-8 ">
+          <header className="mb-10 space-y-1">
+            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+              Settings
+            </h1>
+            <p className="text-lg text-slate-500 max-w-2xl">
+              Manage your personal preferences, account security, and notification triggers.
             </p>
           </header>
 

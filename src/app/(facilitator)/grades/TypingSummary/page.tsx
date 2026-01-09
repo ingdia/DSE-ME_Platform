@@ -1,36 +1,32 @@
-import { Keyboard, Target, Clock, TrendingUp, Award, Calendar } from "lucide-react"
+"use client";
+import { Keyboard, Target, Clock, TrendingUp, Award, Calendar, ArrowLeft } from "lucide-react"
+import { useRouter } from "next/navigation";
+import StatCard from '@/components/ui/statuscard';
 
-// StatsCards data
 const stats = [
-  { label: "Avg WPM", value: "0", icon: Keyboard, color: "text-blue-600", bgColor: "bg-blue-50" },
-  { label: "Avg Accuracy", value: "0%", icon: Target, color: "text-sky-600", bgColor: "bg-sky-50" },
-  { label: "Total Sessions", value: "0", icon: Clock, color: "text-indigo-600", bgColor: "bg-indigo-50" },
-  { label: "Total Hours", value: "0h", icon: TrendingUp, color: "text-cyan-600", bgColor: "bg-cyan-50" },
-  { label: "Top WPM", value: "0", icon: Award, color: "text-blue-600", bgColor: "bg-blue-50" },
+  { title: "Average WPM", value: "45", subtext: "+3 this week", icon: <Keyboard size={32} /> },
+  { title: "Average Accuracy", value: "92%", subtext: "+2% this week", icon: <Target size={32} /> },
+  { title: "Total Sessions", value: "156", subtext: "+12 this week", icon: <Clock size={32} /> },
+  { title: "Top Performer", value: "Sarah J.", subtext: "68 WPM", icon: <Award size={32} /> },
 ]
 
 function StatsCards() {
   return (
-    <div className="grid grid-cols-5 gap-4 px-8 mb-8 ">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {stats.map((stat, i) => (
-        <div
+        <StatCard
           key={i}
-          className="bg-white p-6 rounded-[20px] border border-slate-100 flex items-center gap-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
-        >
-          <div className={`${stat.bgColor} p-3 rounded-xl`}>
-            <stat.icon className={`w-5 h-5 ${stat.color}`} />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold text-[#0057B8] leading-none">{stat.value}</span>
-            <span className="text-[11px] font-semibold text-slate-400 mt-1 uppercase tracking-wider">{stat.label}</span>
-          </div>
-        </div>
+          icon={stat.icon}
+          title={stat.title}
+          value={stat.value}
+          subtext={stat.subtext}
+        />
       ))}
     </div>
   )
 }
 
-// WeeklySummaryTable data
+
 const students = [
   { rank: 1, name: "John Smith", email: "john.smith@example.com", wpm: 0, accuracy: "0%", sessions: 0, duration: "0 min" },
   { rank: 2, name: "Sarah Johnson", email: "sarah.j@example.com", wpm: 0, accuracy: "0%", sessions: 0, duration: "0 min" },
@@ -41,7 +37,7 @@ const students = [
 
 function WeeklySummaryTable() {
   return (
-    <div className="px-8">
+    <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-bold text-[#34597E]">Weekly Summary</h2>
         <button className="flex items-center gap-3 px-4 py-2 border border-slate-200 rounded-xl text-[13px] font-medium text-slate-600 bg-white hover:bg-slate-50 transition-colors shadow-sm">
@@ -99,13 +95,23 @@ function WeeklySummaryTable() {
   )
 }
 
-// page.tsx content
+
 export default function DashboardContentPage() {
+  const router = useRouter();
+  
   return (
-    <main className="flex-1 pt-4 pb-10 bg-[#f0f4f8] min-h-screen ml-20">
-      <div className="px-8 mb-8">
-        <h2 className="text-3xl font-bold text-slate-800 mb-2">Typing Practice Summary</h2>
-        <p className="text-slate-500 mb-6">Weekly and overall typing practice statistics</p>
+    <main className="flex-1 pt-4 pb-10 min-h-screen">
+      <div className="flex items-center gap-4 mb-4">
+        <button
+          onClick={() => router.back()}
+          className="p-2 rounded-full hover:bg-gray-200 transition"
+        >
+          <ArrowLeft size={18} />
+        </button>
+        <div>
+          <h2 className="text-xl font-bold text-sky-700">Typing Practice Summary</h2>
+          <p className="text-sm text-gray-500">Weekly and overall typing practice statistics</p>
+        </div>
       </div>
 
       <StatsCards />
