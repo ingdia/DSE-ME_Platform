@@ -35,16 +35,10 @@ export default function MELayout({
           isOpen={sidebarOpen} 
           onClose={() => setSidebarOpen(false)} 
         />
-        <div className="flex-1 flex flex-col min-w-0">
-          <NavbarME 
-            onMenuClick={() => setSidebarOpen(true)} 
-            pageTitle={getPageTitle(pathname)}
-          />
-          <main className="flex-1 md:ml-28 p-4 md:p-6 overflow-auto mt-16 pb-24">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <main className="flex-1 md:ml-28 p-4 md:p-6 overflow-auto mt-16 pb-24 min-h-screen">
+          {children}
+        </main>
+        <Footer />
       </div>
     </AuthProvider>
   </QueryClientProvider>
