@@ -1,12 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import { Download, Plus, Users, Award, TrendingUp, UserCheck, Eye, Edit, MoreVertical } from 'lucide-react';
+import { Users, UserPlus, Briefcase } from 'lucide-react';
 import AddParticipantModal from '@/components/ME/Participant/AddParticipantModal';
 import ViewParticipantModal from '@/components/ME/Participant/ViewParticipantModal';
 import EditParticipantModal from '@/components/ME/Participant/EditParticipantModal';
-import StatCard from '@/components/ui/statuscard';
+import AddCohortModal from '@/components/ME/Participant/AddCohortModal';
+import EmploymentManagementModal from '@/components/ME/Participant/EmploymentManagementModal';
+import StatsCards from '@/components/ME/ParticipantsList/StatsCards';
+import ParticipantsTable from '@/components/ME/ParticipantsList/ParticipantsTable';
+import FilterBar from '@/components/ME/ParticipantsList/FilterBar';
+import EmploymentStats from '@/components/ME/ParticipantsList/EmploymentStats';
 import { Participant } from '@/types/participant';
+import { Cohort } from '@/types/cohort';
+
+const initialCohorts: Cohort[] = [
+  { id: "1", name: "A-001", description: "First cohort of 2024", startDate: "2024-01-15", endDate: "2024-06-15", participantCount: 2, isActive: true },
+  { id: "2", name: "A-002", description: "Second cohort of 2024", startDate: "2024-02-01", endDate: "2024-07-01", participantCount: 2, isActive: true },
+  { id: "3", name: "B-001", description: "Advanced cohort", startDate: "2024-03-01", endDate: "2024-08-01", participantCount: 0, isActive: true },
+  { id: "4", name: "B-002", description: "Professional development cohort", startDate: "2024-04-01", endDate: "2024-09-01", participantCount: 0, isActive: false }
+];
 
 const initialParticipants: Participant[] = [
   { id: "1", name: "Sarah Johnson", email: "sarah.johnson@email.com", cohort: "A-001", gender: "Female", employment: "Employed", score: 92, income: "$55,000", status: "Completed", joinDate: "2024-01-15" },
@@ -15,152 +28,22 @@ const initialParticipants: Participant[] = [
   { id: "4", name: "James Wilson", email: "james.wilson@email.com", cohort: "A-002", gender: "Male", employment: "Unemployed", score: null, income: "$0", status: "Not Started", joinDate: "2024-02-10" },
 ];
 
-function StatsCards({ participants }: { participants: Participant[] }) {
-  const totalParticipants = participants.length;
-  const completedParticipants = participants.filter(p => p.status === "Completed").length;
-  const avgScore = participants.filter(p => p.score).length > 0 
-    ? Math.round(participants.filter(p => p.score).reduce((a,b)=>a+b.score!,0) / participants.filter(p=>p.score).length)
-    : 0;
-  const activeCohorts = new Set(participants.map(p => p.cohort)).size;
-
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-8 mb-8">
-      <StatCard 
-        icon={<Users size={20} />} 
-        title="Total Participants" 
-        value={totalParticipants} 
-        subtext={`+${Math.floor(totalParticipants * 0.1)} from last month`}
-      />
-      <StatCard 
-        icon={<UserCheck size={20} />} 
-        title="Completed" 
-        value={completedParticipants} 
-        subtext={`${Math.round((completedParticipants/totalParticipants)*100)}% completion rate`}
-      />
-      <StatCard 
-        icon={<Award size={20} />} 
-        title="Average Score" 
-        value={`${avgScore}%`} 
-        subtext="Target: 85%"
-      />
-      <StatCard 
-        icon={<TrendingUp size={20} />} 
-        title="Active Cohorts" 
-        value={activeCohorts} 
-        subtext="Currently running"
-      />
-    </div>
-  );
-}
-
-function ParticipantsTable({ participants, onAddClick, onView, onEdit }: { 
-  participants: Participant[], 
-  onAddClick: () => void,
-  onView: (id: string) => void,
-  onEdit: (id: string) => void
-}) {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
-  const handleViewParticipant = (id: string) => {
-    onView(id);
-    setActiveDropdown(null);
-  };
-
-  const handleEditParticipant = (id: string) => {
-    onEdit(id);
-    setActiveDropdown(null);
-  };
-
-  return (
-    <div className="px-8">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-[#34597E]">Participants Management</h2>
-        <div className="flex gap-2">
-          <button 
-            onClick={onAddClick}
-            className="flex items-center gap-2 px-4 py-2 text-white bg-[#0B609D] rounded-lg hover:bg-[#095083]"
-          >
-            <Plus className="w-4 h-4" />
-            Add Participant
-          </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50"><Download className="w-4 h-4" /> CSV</button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50"><Download className="w-4 h-4" /> PDF</button>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-[20px] border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-[#EEF4FB] text-[#0057B8] text-[13px] font-bold">
-            <tr>
-              <th className="px-6 py-4">Name</th>
-              <th className="px-6 py-4">Cohort</th>
-              <th className="px-6 py-4">Gender</th>
-              <th className="px-6 py-4">Employment</th>
-              <th className="px-6 py-4 text-center">Score</th>
-              <th className="px-6 py-4 text-center">Annual Income</th>
-              <th className="px-6 py-4 text-center">Status</th>
-              <th className="px-6 py-4 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-50">
-            {participants.map((p, i) => (
-              <tr key={i} className="group hover:bg-slate-50/50 transition-colors">
-                <td className="px-6 py-6 font-semibold text-slate-800">{p.name}</td>
-                <td className="px-6 py-6">{p.cohort}</td>
-                <td className="px-6 py-6">{p.gender}</td>
-                <td className="px-6 py-6">{p.employment}</td>
-                <td className="px-6 py-6 text-center font-bold text-[#0057B8]">{p.score ?? '-'}</td>
-                <td className="px-6 py-6 text-center">{p.income}</td>
-                <td className="px-6 py-6 text-center">
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                    p.status === "Completed" ? "bg-green-100 text-green-700" :
-                    p.status === "In Progress" ? "bg-blue-100 text-blue-700" :
-                    "bg-gray-100 text-gray-700"
-                  }`}>
-                    {p.status}
-                  </span>
-                </td>
-                <td className="px-6 py-6 text-center relative">
-                  <button
-                    onClick={() => setActiveDropdown(activeDropdown === p.id ? null : p.id)}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  >
-                    <MoreVertical size={16} className="text-gray-400" />
-                  </button>
-                  
-                  {activeDropdown === p.id && (
-                    <div className="absolute right-6 top-12 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-10 min-w-[120px]">
-                      <button
-                        onClick={() => handleViewParticipant(p.id)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full text-left"
-                      >
-                        <Eye size={14} />
-                        View
-                      </button>
-                      <button
-                        onClick={() => handleEditParticipant(p.id)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 w-full text-left"
-                      >
-                        <Edit size={14} />
-                        Edit
-                      </button>
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  )
-}
-
 export default function ParticipantsPage() {
   const [participants, setParticipants] = useState<Participant[]>(initialParticipants);
+  const [cohorts, setCohorts] = useState<Cohort[]>(initialCohorts);
+  const [activeTab, setActiveTab] = useState<'all' | 'cohorts' | 'employment'>('all');
+  const [selectedCohort, setSelectedCohort] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [employmentFilter, setEmploymentFilter] = useState<string>('all');
+  const [genderFilter, setGenderFilter] = useState<string>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [cohortModalOpen, setCohortModalOpen] = useState(false);
+  const [employmentModalOpen, setEmploymentModalOpen] = useState(false);
   const [selectedParticipant, setSelectedParticipant] = useState<Participant | null>(null);
 
   const handleAddParticipant = (newParticipant: Omit<Participant, "id">) => {
@@ -194,20 +77,175 @@ export default function ParticipantsPage() {
     );
   };
 
+  const handleAddCohort = (newCohort: Omit<Cohort, "id" | "participantCount">) => {
+    const cohort: Cohort = {
+      ...newCohort,
+      id: `cohort_${Date.now()}`,
+      participantCount: 0
+    };
+    setCohorts(prev => [...prev, cohort]);
+  };
+
+  const filteredParticipants = participants.filter(participant => {
+    const matchesSearch = participant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         participant.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCohort = selectedCohort === 'all' || participant.cohort === selectedCohort;
+    const matchesStatus = statusFilter === 'all' || participant.status === statusFilter;
+    const matchesEmployment = employmentFilter === 'all' || participant.employment === employmentFilter;
+    const matchesGender = genderFilter === 'all' || participant.gender === genderFilter;
+    
+    return matchesSearch && matchesCohort && matchesStatus && matchesEmployment && matchesGender;
+  });
+
+  const totalPages = Math.ceil(filteredParticipants.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedParticipants = filteredParticipants.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleUpdateEmployment = (participantId: string, employment: string, income?: string) => {
+    setParticipants(prev => 
+      prev.map(p => 
+        p.id === participantId 
+          ? { ...p, employment, income: income || p.income }
+          : p
+      )
+    );
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'cohorts':
+        return (
+          <div className="space-y-6">
+            <FilterBar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              statusFilter={statusFilter}
+              onStatusChange={setStatusFilter}
+              employmentFilter={employmentFilter}
+              onEmploymentChange={setEmploymentFilter}
+              selectedCohort={selectedCohort}
+              onCohortChange={setSelectedCohort}
+              cohorts={cohorts}
+              participants={participants}
+              onAddCohort={() => setCohortModalOpen(true)}
+              type="cohorts"
+            />
+            <ParticipantsTable 
+              participants={paginatedParticipants} 
+              onAddClick={() => setAddModalOpen(true)}
+              onView={handleViewParticipant}
+              onEdit={handleEditParticipant}
+              totalItems={filteredParticipants.length}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        );
+      case 'employment':
+        return (
+          <div className="space-y-6">
+            <EmploymentStats participants={participants} />
+            <FilterBar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              statusFilter={statusFilter}
+              onStatusChange={setStatusFilter}
+              employmentFilter={employmentFilter}
+              onEmploymentChange={setEmploymentFilter}
+              genderFilter={genderFilter}
+              onGenderChange={setGenderFilter}
+              onUpdateEmployment={() => setEmploymentModalOpen(true)}
+              type="employment"
+            />
+            <ParticipantsTable 
+              participants={paginatedParticipants} 
+              onAddClick={() => setAddModalOpen(true)}
+              onView={handleViewParticipant}
+              onEdit={handleEditParticipant}
+              totalItems={filteredParticipants.length}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        );
+      default:
+        return (
+          <div className="space-y-6">
+            <StatsCards participants={participants} />
+            <FilterBar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              statusFilter={statusFilter}
+              onStatusChange={setStatusFilter}
+              employmentFilter={employmentFilter}
+              onEmploymentChange={setEmploymentFilter}
+              selectedCohort={selectedCohort}
+              onCohortChange={setSelectedCohort}
+              cohorts={cohorts}
+              type="all"
+            />
+            <ParticipantsTable 
+              participants={paginatedParticipants} 
+              onAddClick={() => setAddModalOpen(true)}
+              onView={handleViewParticipant}
+              onEdit={handleEditParticipant}
+              totalItems={filteredParticipants.length}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        );
+    }
+  };
+
   return (
-    <main className="flex-1 pb-10 min-h-screen">
-      <div className="px-8 mb-4">
-        <h2 className="text-3xl font-bold text-slate-800 mb-1">Participants Management</h2>
-        <p className="text-slate-500 mb-6">Track, filter, and manage all program participants</p>
+    <div>
+      <div className="bg-white rounded-lg shadow-sm p-1 mb-6">
+        <div className="flex space-x-1">
+          <button
+            onClick={() => setActiveTab('all')}
+            className={`flex-1 px-4 py-2 text-sm font-medium rounded-lg transition ${
+              activeTab === 'all'
+                ? 'bg-[#0B609D] text-white'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Users className="w-4 h-4 inline mr-2" />
+            All Participants
+          </button>
+          <button
+            onClick={() => setActiveTab('cohorts')}
+            className={`flex-1 px-4 py-2 text-sm font-medium rounded-lg transition ${
+              activeTab === 'cohorts'
+                ? 'bg-[#0B609D] text-white'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <UserPlus className="w-4 h-4 inline mr-2" />
+            By Cohorts
+          </button>
+          <button
+            onClick={() => setActiveTab('employment')}
+            className={`flex-1 px-4 py-2 text-sm font-medium rounded-lg transition ${
+              activeTab === 'employment'
+                ? 'bg-[#0B609D] text-white'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Briefcase className="w-4 h-4 inline mr-2" />
+            Employment
+          </button>
+        </div>
       </div>
 
-      <StatsCards participants={participants} />
-      <ParticipantsTable 
-        participants={participants} 
-        onAddClick={() => setAddModalOpen(true)}
-        onView={handleViewParticipant}
-        onEdit={handleEditParticipant}
-      />
+      {renderTabContent()}
       
       <AddParticipantModal
         isOpen={addModalOpen}
@@ -227,6 +265,19 @@ export default function ParticipantsPage() {
         participant={selectedParticipant}
         onUpdate={handleUpdateParticipant}
       />
-    </main>
+      
+      <AddCohortModal
+        isOpen={cohortModalOpen}
+        onClose={() => setCohortModalOpen(false)}
+        onCreate={handleAddCohort}
+      />
+      
+      <EmploymentManagementModal
+        isOpen={employmentModalOpen}
+        onClose={() => setEmploymentModalOpen(false)}
+        participants={participants}
+        onUpdateEmployment={handleUpdateEmployment}
+      />
+    </div>
   );
 }
