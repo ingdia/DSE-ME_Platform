@@ -25,7 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html>
       <body>
-        <ProfileProvider>{children}</ProfileProvider>
+        <Providers>
+          <ProfileProvider>{children}</ProfileProvider>
+        </Providers>
       </body>
     </html>
   );
