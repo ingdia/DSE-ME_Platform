@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import IconButton from "@/components/IconButton";
 import { Plus, Users, UserX, UserCheck, User, Download } from "lucide-react";
 
-/* ================= ADD PARTICIPANT MODAL ================= */
+
 function AddParticipantModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-lg">
-        {/* Header */}
+       
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Add Participant</h2>
           <button onClick={onClose} className="text-gray-500 text-xl">
@@ -80,7 +80,7 @@ function AddParticipantModal({ onClose }: { onClose: () => void }) {
             </select>
           </div>
 
-          {/* Actions */}
+    
           <div className="gap-3 pt-4">
             <button
               type="submit"
@@ -94,7 +94,7 @@ function AddParticipantModal({ onClose }: { onClose: () => void }) {
     </div>
   );
 }
-/* ================= VIEW PARTICIPANT MODAL ================= */
+
 function ViewParticipantModal({
   participant,
   onClose,
@@ -107,7 +107,7 @@ function ViewParticipantModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white w-full max-w-md rounded-2xl p-6 shadow-lg">
-        {/* Header */}
+      
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Participant Details</h2>
           <button onClick={onClose} className="text-gray-500 text-xl">
@@ -115,7 +115,7 @@ function ViewParticipantModal({
           </button>
         </div>
 
-        {/* Details */}
+      
         <div className="space-y-3 text-sm">
           <p><span className="font-medium">ID:</span> {participant.id}</p>
           <p><span className="font-medium">Name:</span> {participant.name}</p>
@@ -145,7 +145,7 @@ function ViewParticipantModal({
 }
 
 
-/* ================= MAIN PAGE ================= */
+
 function Participant() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
