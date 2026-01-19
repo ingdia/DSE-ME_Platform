@@ -13,11 +13,11 @@ import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-  { label: 'Overview', icon: Home, href: '/ME/overviews' },
-  { label: 'Participants', icon: Users, href: '/ME/participantslist' },
-  { label: 'Facilitators', icon: UserCog, href: '/ME/facilitators' },
-  { label: 'Courses', icon:  BookOpen , href: '/ME/courses' },
-  { label: 'Reports', icon:  FileBarChart, href: '/ME/reports' },
+  { label: 'Dashboard', icon: Home, href: '/donor/dashboard' },
+  { label: 'Partners', icon: Users, href: '/donor/partners' },
+  { label: 'Analytics', icon: UserCog, href: '/donor/analytics' },
+  { label: 'Reports', icon:  BookOpen , href: '/donor/reports' },
+ 
 ];
 
 const settingsItem = { label: 'Settings', icon: Settings, href: '/ME/settings' };
@@ -27,7 +27,7 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-export default function SidebarME({ isOpen = false, onClose }: SidebarProps) {
+export default function SidebarDonor({ isOpen = false, onClose }: SidebarProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
