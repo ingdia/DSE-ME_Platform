@@ -1,5 +1,6 @@
 import { Building2, Mail, Phone, MapPin, Users, TrendingUp, AlertTriangle, Heart } from "lucide-react";
 import { type Partner } from "@/types/partners";
+import { calculatePercentage } from "@/utils/calculations";
 
 interface PartnersTableProps {
   partners: Partner[];
@@ -145,7 +146,7 @@ export default function PartnersTable({ partners, onView, onEdit }: PartnersTabl
                     </div>
                   </div>
                   <div className="text-xs text-gray-600 mt-1">
-                    {Math.round((partner.femaleParticipants / partner.totalParticipants) * 100) || 0}% female
+                    {calculatePercentage(partner.femaleParticipants, partner.totalParticipants)}% female
                   </div>
                 </td>
                 <td className="py-4 px-6">

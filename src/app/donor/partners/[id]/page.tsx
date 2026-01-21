@@ -5,6 +5,7 @@ import { ArrowLeft, Building2, MapPin, Users, TrendingUp, AlertTriangle, Heart, 
 import { useState, use } from "react";
 import { getPartnerById, getMERequestsByPartnerId } from "@/data/partnersData";
 import { type Partner, type MERequest } from "@/types/partners";
+import { calculatePercentage } from "@/utils/calculations";
 
 export default function PartnerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -183,7 +184,7 @@ export default function PartnerDetailPage({ params }: { params: Promise<{ id: st
               <div className="text-right">
                 <p className="text-lg font-bold text-pink-600">{partner.femaleParticipants}</p>
                 <p className="text-xs text-gray-500">
-                  {Math.round((partner.femaleParticipants / partner.totalParticipants) * 100)}%
+                  {calculatePercentage(partner.femaleParticipants, partner.totalParticipants)}%
                 </p>
               </div>
             </div>
@@ -195,7 +196,7 @@ export default function PartnerDetailPage({ params }: { params: Promise<{ id: st
               <div className="text-right">
                 <p className="text-lg font-bold text-blue-600">{partner.maleParticipants}</p>
                 <p className="text-xs text-gray-500">
-                  {Math.round((partner.maleParticipants / partner.totalParticipants) * 100)}%
+                  {calculatePercentage(partner.maleParticipants, partner.totalParticipants)}%
                 </p>
               </div>
             </div>
@@ -203,7 +204,7 @@ export default function PartnerDetailPage({ params }: { params: Promise<{ id: st
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div 
                   className="bg-pink-500 h-3 rounded-l-full" 
-                  style={{ width: `${(partner.femaleParticipants / partner.totalParticipants) * 100}%` }}
+                  style={{ width: `${calculatePercentage(partner.femaleParticipants, partner.totalParticipants)}%` }}
                 ></div>
               </div>
             </div>
