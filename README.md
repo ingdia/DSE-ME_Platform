@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DSE-ME Capstone Project
+
+A comprehensive educational management system built with Next.js, designed to streamline academic operations for facilitators and administrators in educational institutions.
+
+##  MVP Overview
+
+This system provides two main user interfaces:
+
+### **Facilitator Dashboard**
+A complete academic management platform for educators to:
+- **Assignment Management**: Create, edit, and grade assignments with status tracking
+- **Attendance Tracking**: ALU-style attendance system with 5 status types (Present, Late, Absent, Late with Communication, Absent with Communication)
+- **Grade Analytics**: Comprehensive grade summaries and typing performance analytics
+- **Student Progress**: Real-time monitoring of student performance and engagement
+
+### **ME (Management & Evaluation) Portal**
+An administrative interface for institutional oversight:
+- **Facilitator Management**: Assign facilitators to cohorts/courses, handle access requests
+- **Course Administration**: Create and manage courses with level classifications and participant tracking
+- **System Analytics**: Monitor institutional performance and resource allocation
+
+## Key Features
+
+### **Assignment System**
+- CRUD operations for assignments
+- Status tracking (Not Started, In Progress, Completed)
+- Bulk grading capabilities
+- Search and filter functionality
+- Pagination for large datasets
+
+### **Attendance Management**
+- Weekly and monthly attendance views
+- Real-world ALU attendance model implementation
+- Visual status indicators with color coding
+- Comprehensive attendance analytics
+
+### **Grade Analytics**
+- Statistical summaries and performance metrics
+- Typing speed and accuracy tracking
+- Progress visualization
+- Export capabilities
+
+### **User Management**
+- Role-based access control
+- Facilitator assignment workflows
+- Access request handling
+- Professional UI with modal overlays
+
+##  Technical Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **State Management**: React Hooks
+- **UI Components**: Custom component library
+
+##  Project Structure
+
+```
+src/
+├── app/
+│   ├── (facilitator)/          # Facilitator dashboard routes
+│   │   ├── grades/             # Assignment and grade management
+│   │   ├── attendance/         # Attendance tracking
+│   │   └── layout.tsx          # Facilitator layout
+│   ├── ME/                     # Management & Evaluation portal
+│   │   ├── facilitators/       # Facilitator management
+│   │   ├── courses/           # Course administration
+│   │   └── layout.tsx         # ME layout
+│   └── page.tsx               # Landing page
+├── components/
+│   ├── AttendanceComponents/   # Attendance system components
+│   ├── GradesComponents/      # Assignment and grading components
+│   ├── ME/                    # ME portal components
+│   ├── ui/                    # Reusable UI components
+│   ├── Navbar.tsx            # Main navigation
+│   └── Sidebar.tsx           # Sidebar navigation
+├── types/                     # TypeScript type definitions
+└── utils/                     # Utility functions and helpers
+```
+
+##  Design System
+
+- **Primary Color**: #0B609D (Professional blue)
+- **Consistent Card Design**: Unified styling across all components
+- **Responsive Layout**: Mobile-first approach with adaptive layouts
+- **Professional UI**: Clean, modern interface with proper spacing and typography
+- **Status Indicators**: Color-coded system for different states (green/yellow/red)
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd DSE-ME_capstone_fn
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+##  Usage
 
-## Learn More
+### **For Facilitators**
+1. Access the facilitator dashboard
+2. Manage assignments and track student progress
+3. Record attendance using the ALU-style system
+4. View comprehensive grade analytics
 
-To learn more about Next.js, take a look at the following resources:
+### **For Administrators**
+1. Access the ME portal
+2. Manage facilitator assignments and access requests
+3. Create and oversee course offerings
+4. Monitor institutional performance
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Component Architecture**: Modular, reusable components with separation of concerns
+- **Type Safety**: Full TypeScript implementation with proper type definitions
+- **Code Organization**: Clean file structure with logical component grouping
+- **Responsive Design**: Mobile-first approach with consistent breakpoints
 
-## Deploy on Vercel
+##  Future Enhancements
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Database integration for persistent data storage
+- Real-time notifications and updates
+- Advanced analytics and reporting
+- Mobile application development
+- Integration with external educational platforms
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

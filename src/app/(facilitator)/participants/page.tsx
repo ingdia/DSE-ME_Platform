@@ -2,23 +2,12 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import IconButton from "../../../components/IconButton";
-import StatusCard from "../../../components/ui/statuscard";
 import { Plus, Users, UserX, UserCheck, User, Download, Search } from "lucide-react";
+import StatusCard from "../../../components/ui/statuscard";
+import { mockParticipants, Participant } from "@/lib/mockParticipants";
 
 /* ================= TYPES ================= */
-interface ParticipantData {
-  id: string;
-  name: string;
-  gender: string;
-  age: number;
-  phone: string;
-  email?: string;
-  course: string;
-  cohort: string;
-  enrollmentDate: string;
-  status: string;
-}
+type ParticipantData = Participant;
 
 /* ================= PARTICIPANT MODAL (ADD & EDIT) ================= */
 function ParticipantModal({ 
@@ -37,9 +26,9 @@ function ParticipantModal({
     phone: initialData?.phone || "",
     email: initialData?.email || "",
     age: initialData?.age?.toString() || "",
-    cohort: initialData?.status || "",
     course: initialData?.course || "",
     gender: initialData?.gender || "Female",
+    cohort: initialData?.cohort || "",
     status: initialData?.status || "Active"
   });
 
@@ -52,7 +41,6 @@ function ParticipantModal({
       phone: formData.phone,
       email: formData.email,
       age: parseInt(formData.age) || 0,
-      cohort: formData.cohort,
       course: formData.course,
       gender: formData.gender,
       cohort: formData.cohort,
@@ -124,6 +112,18 @@ function ParticipantModal({
             />
           </div>
           <div>
+            <label className="block text-sm font-medium text-gray-700">Course</label>
+            <select 
+              name="course"
+              value={formData.course}
+              onChange={handleChange}
+              className="mt-1 w-full px-4 py-2 border rounded-lg bg-white"
+            >
+              <option value="Web Fundamentals">Web Fundamentals</option>
+              <option value="Advanced Front-End Development">Advanced Front-End Development</option>
+            </select>
+          </div>
+          <div>
             <label className="block text-sm font-medium text-gray-700">Cohort</label>
             <select 
               name="cohort"
@@ -133,16 +133,6 @@ function ParticipantModal({
             >
               <option value="cohort-1">cohort-1</option>
               <option value="cohort-2">cohort-2</option>
-            </select>
-            <label className="block text-sm font-medium text-gray-700">Course</label>
-            <select 
-              name="Course"
-              value={formData.gender}
-              onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border rounded-lg bg-white"
-            >
-              <option value="Web Fundamentals">Web Fundamentals</option>
-              <option value="Advanced Front-End Development">Advanced Front-End Development</option>
             </select>
           </div>
           <div>
@@ -155,18 +145,6 @@ function ParticipantModal({
             >
               <option value="Female">Female</option>
               <option value="Male">Male</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Cohort</label>
-            <select 
-              name="Cohort"
-              value={formData.gender}
-              onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border rounded-lg bg-white"
-            >
-              <option value="Cohort-1">Cohort-1</option>
-              <option value="Cohort-1">Cohort-2</option>
             </select>
           </div>
           <div>
@@ -185,7 +163,12 @@ function ParticipantModal({
           </div>
 
           <div className="pt-4">
-            <IconButton label={initialData ? "Update Participant" : "Add Participant"} type="submit" className="w-full" />
+            <button 
+              type="submit" 
+              className="w-full px-6 py-2.5 bg-[#0B609D] hover:bg-[#094d7a] text-white rounded-lg transition-colors font-medium"
+            >
+              {initialData ? "Update Participant" : "Add Participant"}
+            </button>
           </div>
         </form>
       </div>
@@ -305,13 +288,13 @@ const ParticipantsTable = ({
                 <td className="px-6 py-4 text-sm whitespace-nowrap flex gap-2">
                   <button
                     onClick={() => onView(participant)}
-                    className="px-3 py-1.5 bg-blue-900 hover:bg-blue-600 text-white rounded-full transition-colors"
+                    className="px-3 py-1.5 bg-[#0B609D] hover:bg-[#094d7a] text-white text-xs rounded-lg transition-colors"
                   >
                     View
                   </button>
                   <button
                     onClick={() => onEdit(participant)}
-                    className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-full transition-colors"
+                    className="px-3 py-1.5 bg-gray-600 hover:bg-gray-700 text-white text-xs rounded-lg transition-colors"
                   >
                     Edit
                   </button>
@@ -339,63 +322,7 @@ export default function Participant() {
   const [cohortFilter, setCohortFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
 
-  const [participants, setParticipants] = useState<ParticipantData[]>([
-    {
-      id: "001",
-      name: "Nedege Isi",
-      gender: "Female",
-      age: 24,
-      phone: "0781234567",
-      enrollmentDate: "2025-01-01",
-      course: "Web Fundamentals",
-      cohort: "cohort-1",
-      status: "Active",
-    },
-    {
-      id: "002",
-      name: "John Doe",
-      gender: "Male",
-      age: 29,
-      phone: "0787654321",
-      enrollmentDate: "2025-01-05",
-      course: "Web Fundamentals",
-      cohort: "cohort-1",
-      status: "Inactive",
-    },
-    {
-      id: "003",
-      name: "Mary Jane",
-      gender: "Female",
-      age: 22,
-      phone: "0781112223",
-      enrollmentDate: "2025-01-10",
-      course: "Web Fundamentals",
-      cohort: "cohort-1",
-      status: "Active",
-    },
-    {
-      id: "004",
-      name: "Alice Smith",
-      gender: "Female",
-      age: 31,
-      phone: "0784445556",
-      enrollmentDate: "2025-02-01",
-      course: "Web Fundamentals",
-      cohort: "cohort-1",
-      status: "Active",
-    },
-    {
-      id: "005",
-      name: "Robert Brown",
-      gender: "Male",
-      age: 45,
-      phone: "0789998887",
-      enrollmentDate: "2025-02-15",
-      course: "Web Fundamentals",
-      cohort: "cohort-1",
-      status: "Active",
-    }
-  ]);
+  const [participants, setParticipants] = useState<ParticipantData[]>([...mockParticipants]);
 
   // Derived filtered participants
   const filteredParticipants = useMemo(() => {
@@ -463,7 +390,7 @@ export default function Participant() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto min-h-screen">
+    <div className=" mx-auto min-h-screen">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
@@ -474,13 +401,13 @@ export default function Participant() {
           </p>
         </div>
 
-        <div>
-          <IconButton
-            onClick={() => setOpen(true)}
-            icon={<Plus className="w-5 h-5" />}
-            label="Add Participant"
-          />
-        </div>
+        <button
+          onClick={() => setOpen(true)}
+          className="px-4 py-2 text-sm text-white rounded-lg bg-[#0B609D] hover:bg-[#094d7a] transition-colors flex items-center gap-2"
+        >
+          <Plus className="w-5 h-5" />
+          Add Participant
+        </button>
       </div>
 
       {open && (
@@ -546,7 +473,7 @@ export default function Participant() {
           </select>
           <select 
             className="px-4 py-2 border rounded-full bg-white text-sm outline-none cursor-pointer"
-            value={courseFilter}
+            value={cohortFilter}
             onChange={(e) => setCohortFilter(e.target.value)}
           >
             <option value="All">All Cohorts</option>
@@ -566,12 +493,13 @@ export default function Participant() {
             <option value="dropout">dropout</option>
           </select>
 
-          <IconButton 
-            icon={<Download className="w-5 h-5" />} 
-            label="Export" 
+          <button
             onClick={handleExport}
-            className="w-full sm:w-auto"
-          />
+            className="px-4 py-2 text-sm text-white rounded-lg bg-[#0B609D] hover:bg-[#094d7a] transition-colors flex items-center gap-2"
+          >
+            <Download className="w-5 h-5" />
+            Export
+          </button>
         </div>
       </div>
 

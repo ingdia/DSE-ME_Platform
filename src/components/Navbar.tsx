@@ -5,16 +5,19 @@ import { useEffect, useState } from "react"
 import { useAuth } from "@/context/AuthContext"
 import { useRouter } from "next/navigation"
 import { toast } from "react-hot-toast"
+import {useProfile} from "../context/profileContext"
 
 interface NavbarProps {
   onMenuClick?: () => void;
+  pageTitle?: string;
 }
 
-export default function Navbar({ onMenuClick }: NavbarProps) {
+export default function Navbar({ onMenuClick, pageTitle = "Overview" }: NavbarProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { logout } = useAuth();
   const router = useRouter();
+  const { profile } = useProfile();
 
   const handleLogout = () => {
     logout();
@@ -35,7 +38,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   }, [mounted]);
 
   return (
-    <header className="ml-28 px-4 md:px-8 py-2 md:py-3 flex items-center justify-between" >
+    <header className="fixed top-0 md:pl-33 left-0 right-0 z-40 pr-4 md:pr-6 py-1 md:py-2 flex items-center justify-between bg-[#EEF3FD]" >
       <div className="flex items-center gap-2 md:gap-4">
         
         {mounted && isMobile && (
@@ -48,7 +51,8 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
         )}
         
         <div>
-          <h1 className="text-lg md:text-2xl font-bold" style={{ color: '#34597E' }}>Facilitator Dashboard</h1>
+          <h1 className="text-base md:text-xl font-bold" style={{ color: '#34597E' }}>Facilitator Dashboard</h1>
+          <p className="text-sm md:text-base py-0.5 md:py-1" style={{ color: '#796666' }}>{pageTitle}</p>
         </div>
       </div>
 
@@ -60,9 +64,20 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
 
         
         <div className="flex items-center gap-2 md:gap-3">
-          <div className="w-8 h-8 md:w-10 md:h-10 bg-sky-700 rounded-full flex items-center justify-center text-white font-semibold text-xs md:text-sm">
-            DI
-          </div>
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden bg-sky-700">
+  {profile.avatar ? (
+    <img
+      src={profile.avatar}
+      className="w-full h-full object-cover"
+      alt="avatar"
+    />
+  ) : (
+    <span className="flex items-center justify-center h-full text-white font-semibold">
+      DI
+    </span>
+  )}
+</div>
+
           <div className="text-right hidden sm:block">
             <p className="text-sm font-semibold text-gray-800">diane</p>
             <p className="text-xs" style={{ color: '#0B609D' }}>diane@gmail.com</p>

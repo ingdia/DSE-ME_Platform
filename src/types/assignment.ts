@@ -6,7 +6,9 @@ export interface Assignment {
   chapter: string;
   dueDate: string;
   maxScore: number;
-  grades?: Record<string, number>; // studentId => score
+  grades?: Record<string, number>; 
+  totalStudents?: number;
+  gradedStudents?: number;
 }
 
 export interface Student {
